@@ -3,107 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. John Doe - Personal Website</title>
+    <title>Dr. Chanankorn Jandaeng - Personal Website</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: auto;
+            display: block;
+            border: 4px solid #007acc;
         }
-        header {
-            background: #007acc;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        nav {
-            text-align: center;
-            margin: 1rem 0;
-        }
-        nav a {
-            text-decoration: none;
+        .section-heading {
             color: #007acc;
-            margin: 0 1rem;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        main {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        section {
-            margin-bottom: 2rem;
-        }
-        section h2 {
-            color: #007acc;
-        }
-        ul {
-            padding: 0;
-            list-style: none;
-        }
-        ul li {
-            margin-bottom: 0.5rem;
         }
         footer {
-            text-align: center;
-            padding: 1rem 0;
             background: #007acc;
             color: white;
+            padding: 1rem 0;
+            text-align: center;
         }
+
+       
+        .reference {
+            margin-bottom: 1rem;
+        }
+        a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Dr. John Doe</h1>
-    <p>Lecturer in Computer Science at XYZ University</p>
+<header class="bg-primary text-white text-center py-4">
+    <h1>Dr. Chanankorn Jandaeng</h1>
+    <p>Lecturer in Information Technology at Walailak University University, THAILAND</p>
+    <img src="https://apis.wu.ac.th/des/PicPersonFile/5500000009.jpg" alt="Dr. Chanankorn Jandaeng" class="avatar">
 </header>
 
-<nav>
-    <a href="#about">About</a>
-    <a href="#courses">Courses</a>
-    <a href="#research">Research</a>
-    <a href="#contact">Contact</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<main>
-    <section id="about">
-        <h2>About Me</h2>
+<main class="container my-5">
+    <section id="about" class="mb-5">
+        <h2 class="section-heading">About Me</h2>
         <p>
-            I am a lecturer in Computer Science at XYZ University with a passion for teaching and research in the fields of machine learning, cybersecurity, and software development.
+          I received the joint B.Sc. and M.Sc. degree in computer science and Ph.D. degree in computer engineering from the Price of Songkla University, Thailand, in 2005 and 2012, respectively. He is currently a Researcher and a Lecturer with the School of Informatics, Walailak University, Thailand. His research interests include the Internet of Things, cybersecurity, intelligent network monitoring systems, data science, and artificial intelligence applied in cybersecurity and network monitoring.
         </p>
         <h3>Workplace</h3>
-        <p>Department of Computer Science, XYZ University</p>
+        <p>Department of Information Technology, School of Informatics, Walailak University</p>
 
         <h3>Education</h3>
         <ul>
-            <li>Ph.D. in Computer Science, ABC University</li>
-            <li>M.Sc. in Information Technology, DEF University</li>
-            <li>B.Sc. in Software Engineering, GHI University</li>
+            <li>Ph.D. in Computer Engineering, Prince of Songkla University, 2011</li>
+            <li>M.Sc. in Computer Science, Prince of Songkla University, 2005</li>
+            <li>B.Sc. in Computer Science, Prince of Songkla University, 2002</li>
         </ul>
 
         <h3>Experience</h3>
         <ul>
-            <li>Lecturer, XYZ University (2015 - Present)</li>
-            <li>Software Developer, JKL Corporation (2010 - 2015)</li>
+            <li>Lecturer, Walailak University (2011 - Present)</li>
+            <li>Deputy Dean, School of Informatics, WU (2021 - 2023)</li>
         </ul>
     </section>
 
-    <section id="courses">
-        <h2>Courses</h2>
+    <section id="courses" class="mb-5">
+        <h2 class="section-heading">Courses</h2>
         <h3>Current Course</h3>
-        <p>
-            <strong>Web Application Development with React</strong><br>
-            <a href="https://example-course-site.com" target="_blank">Course Website</a>
-        </p>
+        <ul>
+            <li><strong>Web Application Development with React</strong> (
+              <a href="https://github.com/cjundang/Basic-Web-Application-Development" target="_blank">Course Website</a>
+            )</li>
+        </ul>
 
         <h3>Previous Courses</h3>
         <ul>
@@ -113,31 +106,93 @@
         </ul>
     </section>
 
-    <section id="research">
-        <h2>Research</h2>
-        <ul>
-            <li>
-                <a href="https://doi.org/10.1234/example-paper-1" target="_blank">Paper Title 1: Analyzing Big Data in Healthcare</a>
-            </li>
-            <li>
-                <a href="https://doi.org/10.1234/example-paper-2" target="_blank">Paper Title 2: Enhancing Cybersecurity with Machine Learning</a>
-            </li>
-            <li>
-                <a href="https://doi.org/10.1234/example-paper-3" target="_blank">Paper Title 3: Optimizing IoT Systems for Smart Cities</a>
-            </li>
-        </ul>
+    <section id="research" class="mb-5">
+        <h2 class="section-heading">Research</h2>
+        <div class="reference">
+          Jandaeng, C., Chukleang, T., Kongsen, J., Koad, P., & Thu, M. (2024). 
+          Transaction fees minimization in blockchain-based home delivery system. 
+          <em>IEEE Access</em>. 
+          <a href="https://doi.org/10.1109/ACCESS.2024.3439683" target="_blank">https://doi.org/10.1109/ACCESS.2024.3439683</a>
+      </div>
+  
+      <div class="reference">
+          Jandaeng, C., Kongsen, J., Koad, P., Thu, M., & Somchuea, S. (2024). 
+          Task scheduling algorithm for power minimization in low-cost disaster monitoring system: A heuristic approach. 
+          <em>Journal of Sensor and Actuator Networks</em>. 
+          <a href="https://doi.org/10.3390/jsan13050059" target="_blank">https://doi.org/10.3390/jsan13050059</a>
+      </div>
+  
+      <div class="reference">
+          Kongsen, J., Chantaradsuwan, D., Koad, P., Thu, M., & Jandaeng, C. (2024). 
+          A secure blockchain-enabled remote healthcare monitoring system for home isolation. 
+          <em>Journal of Sensor and Actuator Networks</em>. 
+          <a href="https://doi.org/10.3390/jsan13010013" target="_blank">https://doi.org/10.3390/jsan13010013</a>
+      </div>
+  
+      <div class="reference">
+          Chukleang, T., & Jandaeng, C. (2022). 
+          Security enhancement in smart logistics with blockchain technology: A home delivery use case. 
+          <em>Informatics</em>. 
+          <a href="https://doi.org/10.3390/informatics9030070" target="_blank">https://doi.org/10.3390/informatics9030070</a>
+      </div>
+  
+      <div class="reference">
+          Bouyam, C., & Jandaeng, C. (2021). 
+          The middleware architecture design for gathering the heterogeneous data in big data. 
+          <em>Indian Journal of Computer Science and Engineering</em>. 
+          <a href="https://doi.org/10.21817/indjcse/2021/v12i3/211203172" target="_blank">https://doi.org/10.21817/indjcse/2021/v12i3/211203172</a>
+      </div>
+  
+      <div class="reference">
+          Partanapat, C., Jaruskulchai, C., & Jandaeng, C. (2020). 
+          A hybrid model for coronary heart disease prediction in Thai population. 
+          <em>Advances in Science, Technology and Engineering Systems</em>. 
+          <a href="https://doi.org/10.25046/AJ050552" target="_blank">https://doi.org/10.25046/AJ050552</a>
+      </div>
+  
+      <div class="reference">
+          Jandaeng, C. (2016). 
+          Embedded packet logger for network monitoring system. 
+          <em>Lecture Notes in Electrical Engineering</em>. 
+          <a href="https://doi.org/10.1007/978-3-319-24584-3_93" target="_blank">https://doi.org/10.1007/978-3-319-24584-3_93</a>
+      </div>
+  
+      <div class="reference">
+          Jandaeng, C. (2015). 
+          Comparison of RDBMS and document-oriented database in audit log analysis. 
+          In <em>Proceedings of the 2015 7th International Conference on Information Technology and Electrical Engineering: Envisioning the Trend of Computer, Information and Engineering (ICITEE 2015)</em>. 
+          <a href="https://doi.org/10.1109/ICITEED.2015.7408967" target="_blank">https://doi.org/10.1109/ICITEED.2015.7408967</a>
+      </div>
+  
+      <div class="reference">
+          Jandaeng, C. (2013). 
+          The performance measurement of packet scheduling algorithm based on set covering problem. 
+          In <em>Proceedings of the 2013 International Computer Science and Engineering Conference (ICSEC 2013)</em>. 
+          <a href="https://doi.org/10.1109/ICSEC.2013.6694816" target="_blank">https://doi.org/10.1109/ICSEC.2013.6694816</a>
+      </div>
+  
+      <div class="reference">
+          Jandaeng, C., Suntiamontut, W., & Elz, N. (2010). 
+          Throughput improvement of collision avoidance in wireless sensor networks. 
+          In <em>Proceedings of the 2010 6th International Conference on Wireless Communications, Networking and Mobile Computing (WiCOM 2010)</em>. 
+          <a href="https://doi.org/10.1109/WICOM.2010.5601098" target="_blank">https://doi.org/10.1109/WICOM.2010.5601098</a>
+      </div>
+        
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
+    <!-- <section id="contact">
+        <h2 class="section-heading">Contact</h2>
         <p>Email: <a href="mailto:johndoe@xyz.edu">johndoe@xyz.edu</a></p>
         <p>Phone: +1-234-567-8900</p>
-    </section>
+    </section> -->
 </main>
 
 <footer>
-    <p>© 2024 Dr. John Doe. All Rights Reserved.</p>
+    <p>© 2024 Dr. Channakorn Jandaeng. All Rights Reserved.</p>
 </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
