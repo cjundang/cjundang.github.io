@@ -7,53 +7,58 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 10px;
-      padding: 0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f9f9f9;
     }
     h1 {
       font-size: 1.5em;
       text-align: center;
+      margin-top: 10px;
     }
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin: 15px 0;
       font-size: 1em;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9em;
-      overflow-x: auto;
-    }
-    th, td {
       border: 1px solid #ccc;
-      padding: 6px;
-      text-align: left;
+      border-radius: 8px;
     }
-    @media screen and (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      th {
-        background: #f4f4f4;
-        font-weight: bold;
-      }
-      td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 50%;
-      }
-      td:before {
-        position: absolute;
-        top: 0;
-        left: 10px;
-        white-space: nowrap;
-        font-weight: bold;
-        content: attr(data-label);
-      }
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+    }
+    .card h2 {
+      font-size: 1.2em;
+      margin: 0 0 5px;
+    }
+    .card p {
+      margin: 2px 0;
+      font-size: 0.95em;
+    }
+    .link {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.9em;
+      color: #007BFF;
+      text-decoration: none;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+    .message {
+      text-align: center;
+      color: #999;
+      font-size: 1em;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -62,11 +67,13 @@
   <h1>Search Conference Papers</h1>
   <input type="text" id="searchInput" placeholder="Search by name, paper ID, room..." oninput="searchCSV()" />
 
-  <table id="resultsTable"></table>
+  <div id="cardResults" class="card-container"></div>
+  <div id="message" class="message">Please enter a search term.</div>
 
   <script>
     let csvData = [];
 
+    // Load CSV from external file
     window.onload = () => {
       fetch('data.csv')
         .then(response => {
@@ -79,54 +86,53 @@
             skipEmptyLines: true,
             complete: function(results) {
               csvData = results.data;
-              displayResults(csvData);
+              // Initially show nothing
+              document.getElementById('cardResults').innerHTML = '';
             }
           });
         })
         .catch(err => {
-          document.getElementById('resultsTable').innerHTML = `<tr><td>Error loading CSV: ${err.message}</td></tr>`;
+          document.getElementById('message').innerText = `Error loading CSV: ${err.message}`;
         });
     };
 
     function searchCSV() {
       const query = document.getElementById('searchInput').value.toLowerCase();
+      const resultContainer = document.getElementById('cardResults');
+      const message = document.getElementById('message');
+
+      if (!query) {
+        resultContainer.innerHTML = '';
+        message.innerText = "Please enter a search term.";
+        return;
+      }
+
       const filtered = csvData.filter(row =>
         Object.values(row).some(val =>
           val.toLowerCase().includes(query)
         )
       );
-      displayResults(filtered);
-    }
 
-    function displayResults(data) {
-      const table = document.getElementById('resultsTable');
-      table.innerHTML = "";
-
-      if (data.length === 0) {
-        table.innerHTML = "<tr><td>No results found.</td></tr>";
+      if (filtered.length === 0) {
+        resultContainer.innerHTML = '';
+        message.innerText = "No matching records found.";
         return;
       }
 
-      const headers = Object.keys(data[0]);
-      const headerRow = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        headerRow.appendChild(th);
-      });
-      table.appendChild(headerRow);
+      message.innerText = "";
 
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        headers.forEach(h => {
-          const td = document.createElement("td");
-          td.textContent = row[h];
-          td.setAttribute("data-label", h); // for mobile view
-          tr.appendChild(td);
-        });
-        table.appendChild(tr);
-      });
+      resultContainer.innerHTML = filtered.map(row => `
+        <div class="card">
+          <h2>${row['First Name']} ${row['Last Name']}</h2>
+          <p><strong>Accommodation:</strong> ${row['Accommodation']}</p>
+          <p><strong>Paper ID:</strong> ${row['Paper ID']}</p>
+          <p><strong>Conference Room:</strong> ${row['Conference Room']}</p>
+          <p><strong>Session:</strong> ${row['Session Date']} at ${row['Session Time']}</p>
+          <a class="link" href="${row['PDF Upload Link']}" target="_blank">View PDF</a>
+        </div>
+      `).join('');
     }
   </script>
+
 </body>
 </html>
