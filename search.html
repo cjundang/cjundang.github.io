@@ -2,18 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CSV Search Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conference Paper Search</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 10px;
+      padding: 0;
+    }
+    h1 {
+      font-size: 1.5em;
+      text-align: center;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
+    }
+    @media screen and (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        background: #f4f4f4;
+        font-weight: bold;
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+      }
+      td:before {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        content: attr(data-label);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Conference Paper Search</h1>
 
-  <input type="file" id="csvFileInput" accept=".csv" />
-  <input type="text" id="searchInput" placeholder="Search..." />
-  <button onclick="searchCSV()">Search</button>
+  <h1>Search Conference Papers</h1>
+  <input type="text" id="searchInput" placeholder="Search by name, paper ID, room..." oninput="searchCSV()" />
 
-  <table id="resultsTable" border="1"></table>
+  <table id="resultsTable"></table>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="csvSearch.js"></script>
+  <script>
+    let csvData = [];
+
+    window.onload = () => {
+      fetch('data.csv')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load CSV file');
+          return response.text();
+        })
+        .then(text => {
+          Papa.parse(text, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function(results) {
+              csvData = results.data;
+              displayResults(csvData);
+            }
+          });
+        })
+        .catch(err => {
+          document.getElementById('resultsTable').innerHTML = `<tr><td>Error loading CSV: ${err.message}</td></tr>`;
+        });
+    };
+
+    function searchCSV() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = csvData.filter(row =>
+        Object.values(row).some(val =>
+          val.toLowerCase().includes(query)
+        )
+      );
+      displayResults(filtered);
+    }
+
+    function displayResults(data) {
+      const table = document.getElementById('resultsTable');
+      table.innerHTML = "";
+
+      if (data.length === 0) {
+        table.innerHTML = "<tr><td>No results found.</td></tr>";
+        return;
+      }
+
+      const headers = Object.keys(data[0]);
+      const headerRow = document.createElement("tr");
+      headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        headers.forEach(h => {
+          const td = document.createElement("td");
+          td.textContent = row[h];
+          td.setAttribute("data-label", h); // for mobile view
+          tr.appendChild(td);
+        });
+        table.appendChild(tr);
+      });
+    }
+  </script>
 </body>
 </html>
