@@ -27,22 +27,23 @@
       background: #fafafa;
     }
 
+    /* A1:A2 = 50:50 */
     #A1 {
-flex: 6;
-border-bottom: 1px solid #ddd;
-padding: 0;
-}
-#A2 {
-flex: 4;
-border-bottom: 1px solid #ddd;
-padding: 0;
-display: flex;
-flex-direction: column;
-}
-#A2 {
-display: flex;
-flex-direction: column;
-}
+      flex: 6;
+      border-bottom: 1px solid #ddd;
+      padding: 0;
+    }
+    #A2 {
+      flex: 4;
+      border-bottom: 1px solid #ddd;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    #A2 {
+      display: flex;
+      flex-direction: column;
+    }
 
     textarea {
       width: 100%;
@@ -55,10 +56,12 @@ flex-direction: column;
     }
 
     #runBtn {
+      
       background: #2d6cdf;
       color: white;
       border: none;
       cursor: pointer;
+      
     }
     #runBtn:hover {
       background: #1f4da8;
@@ -84,9 +87,21 @@ flex-direction: column;
       <div style="display:flex; gap:8px; padding:6px; border-bottom:1px solid #ccc;">
         <input type="file" id="pdfInput" accept="application/pdf" />
         <button id="loadPdfBtn">Load PDF</button>
+        <button id="fullscreenBtn">Full Screen</button>
+        <button id="exitFullscreenBtn" style="display:none;">Minimize</button>
         <button id="runBtn">รันโค้ด</button>
       </div>
-      <textarea id="codeArea"></textarea>
+      <textarea id="codeArea">
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+</head>
+<body>
+
+</body>
+</html>
+      </textarea>
     </div>
   </div>
 
@@ -138,6 +153,30 @@ flex-direction: column;
           });
         }
       });
+    });
+  </script>
+  <script>
+    const fsBtn = document.getElementById('fullscreenBtn');
+    const exitFsBtn = document.getElementById('exitFullscreenBtn');
+    const A1 = document.getElementById('A1');
+
+    fsBtn.addEventListener('click', () => {
+      if (A1.requestFullscreen) A1.requestFullscreen();
+      fsBtn.style.display = 'none';
+      exitFsBtn.style.display = 'inline-block';
+    });
+
+    exitFsBtn.addEventListener('click', () => {
+      if (document.exitFullscreen) document.exitFullscreen();
+      exitFsBtn.style.display = 'none';
+      fsBtn.style.display = 'inline-block';
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        fsBtn.style.display = 'inline-block';
+        exitFsBtn.style.display = 'none';
+      }
     });
   </script>
 </body>
