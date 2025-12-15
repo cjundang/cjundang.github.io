@@ -16,216 +16,106 @@
     />
 
     <style>
-      body {
-        padding-top: 70px;
-      }
-      .hero {
-        background: #f8f9fa;
-        padding: 60px 0;
-        text-align: center;
-      }
+      
       .section-title {
-        font-weight: 600;
-        border-bottom: 3px solid #0d6efd;
-        display: inline-block;
-        padding-bottom: 5px;
-        margin-bottom: 20px;
-      }
-      .card {
-        height: 100%;
-      }
-      .pub-title {
-        font-weight: 600;
-      }
-      .course-link {
-        text-decoration: none;
-        color: #212529;
-      }
+  font-weight: 600;
+  border-bottom: 3px solid #0d6efd;
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
 
-      .course-link:hover {
-        text-decoration: underline;
-      }
+.course-link {
+  text-decoration: none;
+  color: #212529;
+}
 
-      .link-icon {
-        font-size: 0.9em;
-        color: #0d6efd;
-        margin-left: 6px;
-      }
+.course-link:hover {
+  text-decoration: underline;
+}
+
+.link-icon {
+  font-size: 0.85em;
+  color: #0d6efd;
+  margin-left: 6px;
+}
+
+
     </style>
   </head>
   <body>
     
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container">
-        <h1 id="fullName"></h1>
-        <h5 class="text-muted" id="position"></h5>
-        <p id="affiliation"></p>
+    <body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <span class="navbar-brand">Dr. Chanankorn Jandaeng</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="py-5 text-center bg-light">
+  <div class="container">
+    <h1 id="fullName" class="fw-bold"></h1>
+    <h5 class="text-muted" id="position"></h5>
+    <p id="affiliation"></p>
+  </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<section class="container my-5">
+  <div class="row g-4">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="col-md-4">
+
+      <!-- About -->
+      <div class="mb-4">
+        <h5 class="section-title">About Me</h5>
+        <p id="aboutText"></p>
       </div>
-    </section>
 
-    <!-- About / Education / Experience -->
-    <section id="about" class="container my-5">
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card p-3">
-            <h5 class="section-title">About Me</h5>
-            <p id="aboutText"></p>
-          </div>
-        </div>
+      <!-- Courses -->
+      <div class="mb-4">
+        <h5 class="section-title">Courses</h5>
 
-        <div class="col-md-4">
-          <div class="card p-3">
-            <h5 class="section-title">Education</h5>
-            <ul class="list-unstyled" id="educationList"></ul>
-          </div>
-        </div>
+        <strong>Current Courses</strong>
+        <ul id="currentCourses" class="list-unstyled mt-2"></ul>
 
-        <div class="col-md-4">
-          <div class="card p-3">
-            <h5 class="section-title">Experience</h5>
-            <ul class="list-unstyled" id="experienceList"></ul>
-          </div>
-        </div>
+        <strong class="mt-3 d-block">Previous Courses</strong>
+        <ul id="previousCourses" class="list-unstyled mt-2"></ul>
       </div>
-    </section>
 
-    <!-- Courses -->
-    <section id="courses" class="container my-5">
-      <h3 class="section-title">Courses</h3>
-      <div class="row g-4 mt-2">
-        <div class="col-md-6">
-          <div class="card p-3">
-            <h6>Current Courses</h6>
-            <ul id="currentCourses"></ul>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card p-3">
-            <h6>Previous Courses</h6>
-            <ul id="previousCourses"></ul>
-          </div>
-        </div>
+      <!-- Education -->
+      <div class="mb-4">
+        <h5 class="section-title">Education</h5>
+        <ul id="educationList" class="list-unstyled"></ul>
       </div>
-    </section>
 
-    <!-- Research -->
-    <section id="research" class="container my-5">
+      <!-- Experience -->
+      <div class="mb-4">
+        <h5 class="section-title">Experience</h5>
+        <ul id="experienceList" class="list-unstyled"></ul>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT CONTENT -->
+    <main class="col-md-8">
       <h3 class="section-title">Research Publications</h3>
-      <ol id="publicationList" class="mt-3"></ol>
-    </section>
+      <ol id="publicationList" class="mt-4"></ol>
+    </main>
 
-    <!-- Footer -->
-    <footer class="bg-primary text-white text-center py-3">
-      © 2024 Dr. Chanankorn Jandaeng. All Rights Reserved.
-    </footer>
+  </div>
+</section>
 
-    <script>
-      fetch("data.json")
-        .then((response) => response.json())
-        .then((data) => renderPage(data))
-        .catch((error) => console.error("Error loading data.json:", error));
+<!-- FOOTER -->
+<footer class="text-center py-3 text-muted">
+  © 2024 Dr. Chanankorn Jandaeng. All Rights Reserved.
+</footer>
 
-      function renderPage(data) {
-        /* =======================
-     HERO SECTION
-  ======================= */
-        document.getElementById("fullName").textContent =
-          data.personal_info.full_name;
+<script src="script.js"></script>
+</body>
 
-        document.getElementById(
-          "position"
-        ).textContent = `${data.personal_info.title}, ${data.personal_info.position}`;
-
-        const aff = data.personal_info.affiliation;
-        document.getElementById(
-          "affiliation"
-        ).textContent = `${aff.department}, ${aff.school}, ${aff.university}, ${aff.country}`;
-
-        /* =======================
-     ABOUT ME
-  ======================= */
-        document.getElementById("aboutText").textContent =
-          data.biography.about_me;
-
-        /* =======================
-     EDUCATION
-  ======================= */
-        const educationList = document.getElementById("educationList");
-        educationList.innerHTML = "";
-
-        data.education.forEach((edu) => {
-          educationList.innerHTML += `
-      <li class="mb-2">
-        <strong>${edu.degree} in ${edu.field}</strong><br>
-        ${edu.institution}, ${edu.year}
-      </li>`;
-        });
-
-        /* =======================
-     EXPERIENCE
-  ======================= */
-        const experienceList = document.getElementById("experienceList");
-        experienceList.innerHTML = "";
-
-        data.professional_experience.forEach((exp) => {
-          experienceList.innerHTML += `
-      <li class="mb-2">
-        <strong>${exp.position}</strong><br>
-        ${exp.institution} (${exp.start_year} – ${exp.end_year})
-      </li>`;
-        });
-
-        /* =======================
-     COURSES
-  ======================= */
-        const currentCourses = document.getElementById("currentCourses");
-        currentCourses.innerHTML = "";
-
-        data.teaching.current_courses.forEach((course) => {
-          if (course.url) {
-            currentCourses.innerHTML += `
-        <li>
-          <a href="${course.url}" 
-             target="_blank" 
-             class="course-link">
-            ${course.course_name}
-            <i class="bi bi-box-arrow-up-right link-icon"></i>
-          </a>
-        </li>`;
-          } else {
-            currentCourses.innerHTML += `<li>${course.course_name}</li>`;
-          }
-        });
-
-        const previousCourses = document.getElementById("previousCourses");
-        previousCourses.innerHTML = "";
-
-        data.teaching.previous_courses.forEach((course) => {
-          previousCourses.innerHTML += `<li>${course}</li>`;
-        });
-
-        /* =======================
-     PUBLICATIONS
-  ======================= */
-        const publicationList = document.getElementById("publicationList");
-        publicationList.innerHTML = "";
-
-        data.publications.forEach((pub, index) => {
-          publicationList.innerHTML += `
-      <li class="mb-3">
-        <div class="fw-semibold">
-           ${pub.title}
-        </div>
-        ${pub.authors.join(", ")} (${pub.year})<br>
-        <em>${pub.journal}</em><br>
-        DOI:
-        <a href="https://doi.org/${pub.doi}" target="_blank">
-          ${pub.doi}
-        </a>
-      </li>`;
-        });
-      }
-    </script>
-  </body>
 </html>
