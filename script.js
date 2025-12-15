@@ -96,7 +96,7 @@ function renderPage(data) {
     publicationList.innerHTML += `
       <li class="mb-3">
         <div class="fw-semibold">
-          ${index + 1}. ${pub.title}
+          ${pub.title}
         </div>
         ${pub.authors.join(", ")} (${pub.year})<br>
         <em>${pub.journal}</em><br>
