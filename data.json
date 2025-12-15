@@ -1,0 +1,219 @@
+{
+  "personal_info": {
+    "full_name": "Dr. Chanankorn Jandaeng",
+    "title": "Assistant Professor",
+    "position": "Lecturer in Information Technology",
+    "affiliation": {
+      "department": "Department of Information Technology",
+      "school": "School of Informatics",
+      "university": "Walailak University",
+      "country": "Thailand"
+    },
+    "copyright": "© 2024 Dr. Chanankorn Jandaeng. All Rights Reserved."
+  },
+
+  "biography": {
+    "about_me": "I received the joint B.Sc. and M.Sc. degree in computer science and Ph.D. degree in computer engineering from Prince of Songkla University, Thailand, in 2005 and 2011, respectively. I am currently a Researcher and Lecturer with the School of Informatics, Walailak University, Thailand.",
+    "research_interests": [
+      "Artificial Intelligence",
+      "Internet of Things (IoT)",
+      "Cybersecurity",
+      "Intelligent Network Monitoring Systems",
+      "Data Science",
+      "Blockchain-based Systems"
+    ],
+    "research_focus_statement": "My research focuses on applying artificial intelligence to enhance cybersecurity and network monitoring capabilities in IoT and distributed systems."
+  },
+
+  "education": [
+    {
+      "degree": "Ph.D.",
+      "field": "Computer Engineering",
+      "institution": "Prince of Songkla University",
+      "year": 2011
+    },
+    {
+      "degree": "M.Sc.",
+      "field": "Computer Science",
+      "institution": "Prince of Songkla University",
+      "year": 2005
+    },
+    {
+      "degree": "B.Sc.",
+      "field": "Computer Science",
+      "institution": "Prince of Songkla University",
+      "year": 2002
+    }
+  ],
+
+  "professional_experience": [
+    {
+      "position": "Assistant Professor",
+      "institution": "Walailak University",
+      "start_year": 2024,
+      "end_year": "Present"
+    },
+    {
+      "position": "Lecturer",
+      "institution": "Walailak University",
+      "start_year": 2011,
+      "end_year": 2024
+    },
+    {
+      "position": "Deputy Dean",
+      "institution": "School of Informatics, Walailak University",
+      "start_year": 2021,
+      "end_year": 2023
+    }
+  ],
+
+  "teaching": {
+    "current_courses": [
+      {
+        "course_name": "Mobile Application Development (React Native)",
+        "category": "Current",
+        "url": "https://github.com/cjundang/IIT67-271-MobileApplicationDevelopment"
+      },
+      {
+        "course_name": "Web Application Development with React",
+        "category": "Current",
+        "url": "https://github.com/cjundang/IIT67-271-MobileApplicationDevelopment"
+      }
+    ],
+    "previous_courses": [
+      "Introduction to Machine Learning",
+      "Mobile Application Development",
+      "Computer Networks"
+    ]
+  },
+
+"publications": [
+  {
+    "authors": ["Jandaeng, C.", "Kongkwamcharoen, C.", "Jaiwang, T.", "Koad, P.", "Thu, M."],
+    "year": 2025,
+    "title": "ANYA: A noteworthy youth annotation dataset for machine learning-based ergonomic posture analysis",
+    "journal": "IEEE Access",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C.", "Kongsen, J.", "Koad, P.", "Thu, M.", "Somchuea, S."],
+    "year": 2024,
+    "title": "Task scheduling algorithm for power minimization in low-cost disaster monitoring system: A heuristic approach",
+    "journal": "Journal of Sensor and Actuator Networks",
+    "doi": "10.3390/jsan13050059"
+  },
+  {
+    "authors": ["Jandaeng, C.", "Chukleang, T.", "Kongsen, J.", "Koad, P.", "Thu, M."],
+    "year": 2024,
+    "title": "Transaction fees minimization in blockchain-based home delivery system",
+    "journal": "IEEE Access",
+    "doi": "10.1109/ACCESS.2024.3439683"
+  },
+  {
+    "authors": ["Kongsen, J.", "Chantaradsuwan, D.", "Koad, P.", "Thu, M.", "Jandaeng, C."],
+    "year": 2024,
+    "title": "A secure blockchain-enabled remote healthcare monitoring system for home isolation",
+    "journal": "Journal of Sensor and Actuator Networks",
+    "doi": "10.3390/jsan13010013"
+  },
+  {
+    "authors": ["Jandaeng, C."],
+    "year": 2022,
+    "title": "The 3D model retopology with papercraft technique",
+    "journal": "NU International Journal of Science",
+    "doi": null
+  },
+  {
+    "authors": ["Chukleang, T.", "Jandaeng, C."],
+    "year": 2022,
+    "title": "Security enhancement in smart logistics with blockchain technology: A home delivery use case",
+    "journal": "Informatics",
+    "doi": "10.3390/informatics9030070"
+  },
+  {
+    "authors": ["Bouyam, C.", "Jandaeng, C."],
+    "year": 2021,
+    "title": "The middleware architecture design for gathering the heterogeneous data in big data",
+    "journal": "Indian Journal of Computer Science and Engineering",
+    "doi": "10.21817/indjcse/2021/v12i3/211203172"
+  },
+  {
+    "authors": ["Partanapat, C.", "Jaruskulchai, C.", "Jandaeng, C."],
+    "year": 2020,
+    "title": "A hybrid model for coronary heart disease prediction in Thai population",
+    "journal": "Advances in Science, Technology and Engineering Systems",
+    "doi": "10.25046/AJ050552"
+  },
+  {
+    "authors": ["Partanapat, C.", "Jaruskulchai, C.", "Jandaeng, C."],
+    "year": 2019,
+    "title": "Hybrid pre-processing models for heart disease prediction based on socioeconomic status and major risk factors: Thai heart study",
+    "journal": null,
+    "doi": null
+  },
+  {
+    "authors": ["Phuphong, J.", "Jandaeng, C."],
+    "year": 2019,
+    "title": "The design of Voice over IP monitoring system",
+    "journal": "Thai Journal of Physics",
+    "doi": null
+  },
+  {
+    "authors": ["Chuaychoo, N.", "Rimdusit, T.", "Jandaeng, C."],
+    "year": 2016,
+    "title": "The software architecture of network management system based on elasticsearch technology",
+    "journal": "Engineering and Applied Science Research",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C."],
+    "year": 2015,
+    "title": "Embedded packet logger for network monitoring system",
+    "journal": "Advanced Computer and Communication Engineering Technology (Proceedings)",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C."],
+    "year": 2015,
+    "title": "Comparison of RDBMS and document-oriented database in audit log analysis",
+    "journal": "Proceedings of the 7th International Conference on Information Technology and Electrical Engineering",
+    "doi": "10.1109/ICITEED.2015.7408967"
+  },
+  {
+    "authors": ["Jandaeng, C."],
+    "year": 2013,
+    "title": "The performance measurement of packet scheduling algorithm based on set covering problem",
+    "journal": "Proceedings of the International Computer Science and Engineering Conference (ICSEC)",
+    "doi": "10.1109/ICSEC.2013.6694816"
+  },
+  {
+    "authors": ["Jandaeng, C."],
+    "year": 2012,
+    "title": "Packet scheduling based on set covering problem using greedy algorithm",
+    "journal": "Prince of Songkla University",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C.", "Suntiamontut, W.", "Elz, N."],
+    "year": 2011,
+    "title": "PSA: The packet scheduling algorithm for wireless sensor networks",
+    "journal": "arXiv preprint arXiv:1110.1590",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C.", "Suntiamontut, W.", "Elz, N."],
+    "year": 2011,
+    "title": "Performance prediction of packet scheduling algorithm in wireless sensor networks",
+    "journal": "International Journal of Wireless and Mobile Networks",
+    "doi": null
+  },
+  {
+    "authors": ["Jandaeng, C.", "Suntiamontut, W.", "Elz, N."],
+    "year": 2010,
+    "title": "Throughput improvement of collision avoidance in wireless sensor networks",
+    "journal": "Proceedings of the International Conference on Wireless Communications, Networking and Mobile Computing (WiCOM)",
+    "doi": "10.1109/WICOM.2010.5601098"
+  }
+]
+
+}
