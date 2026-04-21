@@ -70,15 +70,11 @@
   "teaching": {
     "current_courses": [
       {
-        "course_name": "Mobile Application Development (React Native)",
+        "course_name": "Workshop: Simple RAG using n8n",
         "category": "Current",
-        "url": "https://github.com/cjundang/IIT67-271-MobileApplicationDevelopment"
+        "url": "https://github.com/cjundang/Workshop-Simple-RAG-n8n"
       },
-      {
-        "course_name": "Web Application Development with React",
-        "category": "Current",
-        "url": "https://github.com/cjundang/IIT67-271-MobileApplicationDevelopment"
-      }
+      
     ],
     "previous_courses": [
       "Introduction to Machine Learning",
