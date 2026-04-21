@@ -101,9 +101,11 @@ function renderPage(data) {
         ${pub.authors.join(", ")} (${pub.year})<br>
         <em>${pub.journal}</em><br>
         DOI:
-        <a href="https://doi.org/${pub.doi}" target="_blank">
-          ${pub.doi}
-        </a>
+        ${pub.doi
+        ? `<a href="https://doi.org/${pub.doi}" target="_blank">
+       ${pub.doi}
+     </a>`
+        : `<span class="text-muted">N/A</span>`}
       </li>`;
   });
 }
