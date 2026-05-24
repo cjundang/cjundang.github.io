@@ -83,6 +83,8 @@
   },
 
 "publications": [
+  { "authors": [ "Jandaeng, C.", "Koad, P.", "Zolkipli, M. F.", "Phuttharak, J." ], "year": 2026, "title": "TERA: A Trade-Off Evaluation and Resource-Aware Framework for Spam and Phishing Email Detection", "journal": "Informatics", "doi": "10.3390/informatics13050072" }, 
+  { "authors": [ "Koad, P.", "Jandaeng, C.", "Kongsen, J.", "Somchuea, S." ], "year": 2026, "title": "Spatial Classification of Diurnal Precipitation Cycle in the Tropical and Subtropical Regions Based on the Circular Statistical Analysis", "journal": "Trends in Sciences", "doi": "10.48048/tis.2026.12518" },
   {
     "authors": ["Jandaeng, C.", "Kongkwamcharoen, C.", "Jaiwang, T.", "Koad, P.", "Thu, M."],
     "year": 2025,
