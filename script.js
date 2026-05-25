@@ -25,6 +25,9 @@ function renderPage(data) {
   document.getElementById("aboutText").textContent =
     data.biography.about_me;
 
+  document.getElementById("researchFocus").textContent =
+    data.biography.research_focus_statement;
+
 
   /* =======================
      EDUCATION
@@ -89,23 +92,54 @@ function renderPage(data) {
   /* =======================
      PUBLICATIONS
   ======================= */
+  const PREVIEW_COUNT = 5;
   const publicationList = document.getElementById("publicationList");
-  publicationList.innerHTML = "";
+  const publicationListMore = document.getElementById("publicationListMore");
+  const morePubsSection = document.getElementById("morePubsSection");
 
-  data.publications.forEach((pub, index) => {
-    publicationList.innerHTML += `
+  publicationList.innerHTML = "";
+  publicationListMore.innerHTML = "";
+
+  function pubHTML(pub) {
+    return `
       <li class="mb-3">
-        <div class="fw-semibold">
-          ${pub.title}
-        </div>
+        <div class="fw-semibold">${pub.title}</div>
         ${pub.authors.join(", ")} (${pub.year})<br>
-        <em>${pub.journal}</em><br>
+        <em>${pub.journal || ""}</em><br>
         DOI:
         ${pub.doi
-        ? `<a href="https://doi.org/${pub.doi}" target="_blank">
-       ${pub.doi}
-     </a>`
-        : `<span class="text-muted">N/A</span>`}
+          ? `<a href="https://doi.org/${pub.doi}" target="_blank">${pub.doi}</a>`
+          : `<span class="text-muted">N/A</span>`}
       </li>`;
+  }
+
+  data.publications.forEach((pub, index) => {
+    if (index < PREVIEW_COUNT) {
+      publicationList.innerHTML += pubHTML(pub);
+    } else {
+      publicationListMore.innerHTML += pubHTML(pub);
+    }
   });
+
+  if (data.publications.length > PREVIEW_COUNT) {
+    morePubsSection.style.display = "block";
+    const remaining = data.publications.length - PREVIEW_COUNT;
+    document.getElementById("btnMorePubs").innerHTML =
+      `<i class="bi bi-chevron-down me-1"></i> Show ${remaining} more`;
+  }
+}
+
+function toggleMorePubs() {
+  const moreList = document.getElementById("publicationListMore");
+  const btn = document.getElementById("btnMorePubs");
+  const isHidden = moreList.style.display === "none";
+
+  if (isHidden) {
+    moreList.style.display = "block";
+    btn.innerHTML = `<i class="bi bi-chevron-up me-1"></i> Show less`;
+  } else {
+    moreList.style.display = "none";
+    const remaining = moreList.querySelectorAll("li").length;
+    btn.innerHTML = `<i class="bi bi-chevron-down me-1"></i> Show ${remaining} more`;
+  }
 }

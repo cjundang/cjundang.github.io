@@ -16,36 +16,35 @@
     />
 
     <style>
-         
       .section-title {
-  font-weight: 600;
-  border-bottom: 3px solid #0d6efd;
-  display: inline-block;
-  padding-bottom: 4px;
-  margin-bottom: 12px;
-}
+        font-weight: 600;
+        border-bottom: 3px solid #0d6efd;
+        display: inline-block;
+        padding-bottom: 4px;
+        margin-bottom: 12px;
+      }
 
-.course-link {
-  text-decoration: none;
-  color: #212529;
-}
+      .course-link {
+        text-decoration: none;
+        color: #212529;
+      }
 
-.course-link:hover {
-  text-decoration: underline;
-}
+      .course-link:hover {
+        text-decoration: underline;
+      }
 
-.link-icon {
-  font-size: 0.85em;
-  color: #0d6efd;
-  margin-left: 6px;
-}
+      .link-icon {
+        font-size: 0.85em;
+        color: #0d6efd;
+        margin-left: 6px;
+      }
 
-
+      #btnMorePubs {
+        font-size: 0.875rem;
+      }
     </style>
   </head>
   <body>
-    
-    <body>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -74,6 +73,7 @@
       <div class="mb-4">
         <h5 class="section-title">About Me</h5>
         <p id="aboutText"></p>
+        <p id="researchFocus" class="mt-2 fst-italic text-muted" style="font-size:0.9rem;"></p>
       </div>
 
       <!-- Courses -->
@@ -104,6 +104,12 @@
     <main class="col-md-8">
       <h3 class="section-title">Research Publications</h3>
       <ol id="publicationList" class="mt-4"></ol>
+      <div id="morePubsSection" class="mt-2" style="display:none;">
+        <ol id="publicationListMore" style="display:none;"></ol>
+        <button id="btnMorePubs" class="btn btn-outline-primary btn-sm" onclick="toggleMorePubs()">
+          <i class="bi bi-chevron-down me-1"></i> Show more
+        </button>
+      </div>
     </main>
 
   </div>
@@ -116,5 +122,4 @@
 
 <script src="script.js"></script>
 </body>
-
 </html>

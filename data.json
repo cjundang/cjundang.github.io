@@ -15,12 +15,10 @@
   "biography": {
     "about_me": "I received the joint B.Sc. and M.Sc. degree in computer science and Ph.D. degree in computer engineering from Prince of Songkla University, Thailand, in 2005 and 2011, respectively. I am currently a Researcher and Lecturer with the School of Informatics, Walailak University, Thailand.",
     "research_interests": [
-      "Artificial Intelligence",
-      "Internet of Things (IoT)",
+      "Apliied Artificial Intelligence",
       "Cybersecurity",
       "Intelligent Network Monitoring Systems",
-      "Data Science",
-      "Blockchain-based Systems"
+      "Data Science"
     ],
     "research_focus_statement": "My research focuses on applying artificial intelligence to enhance cybersecurity and network monitoring capabilities in IoT and distributed systems."
   },
