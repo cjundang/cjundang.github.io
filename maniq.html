@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maniq Knowledge Quest - Single Page</title>
+  <title>Maniq Knowledge Quest</title>
 
   <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,14 +33,6 @@
       background: #f8fff9;
     }
 
-    .shortcut-item {
-      background: #fff7df;
-      border: 1px solid #f0d184;
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-weight: 600;
-    }
-
     .choice-btn {
       text-align: left;
       white-space: normal;
@@ -51,6 +43,42 @@
       font-size: .92rem;
       color: #5b665f;
     }
+
+    .board-track {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .board-cell {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: .9rem;
+      background: #e0e0e0;
+      color: #333;
+      border: 2px solid transparent;
+      transition: all .2s;
+    }
+
+    .board-cell.active {
+      background: #198754;
+      color: white;
+      border-color: #0d5c36;
+      box-shadow: 0 0 8px rgba(25, 135, 84, .5);
+      transform: scale(1.15);
+    }
+
+    .board-cell.finish {
+      background: #ffc107;
+      color: #333;
+      border-color: #e0a800;
+    }
   </style>
 </head>
 
@@ -58,7 +86,7 @@
   <header class="hero p-4 mb-4">
     <div class="container">
       <h1 class="fw-bold mb-1">Maniq Knowledge Quest</h1>
-      <p class="mb-0">เว็บช่วยทอยเต๋าและสุ่มคำถาม สำหรับเล่นคู่กับกระดานจริง 22 ช่อง</p>
+      <p class="mb-0">เว็บช่วยสุ่มเลขและสุ่มคำถาม สำหรับเล่นคู่กับกระดานจริง 23 ช่อง</p>
     </div>
   </header>
 
@@ -67,20 +95,28 @@
 
       <!-- Left Panel -->
       <section class="col-lg-7">
+        <!-- Board Display -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
           <div class="card-body p-4">
-            <h3 class="fw-bold">1) ทอยเต๋า</h3>
+            <h3 class="fw-bold">กระดาน (ช่องที่ยืน)</h3>
+            <div id="boardTrack" class="board-track mt-3"></div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-body p-4">
+            <h3 class="fw-bold">1) สุ่มเลข (1-4)</h3>
             <p class="small-note mb-3">
-              ให้ผู้เล่นยืนอยู่บนกระดานจริง แล้วกดทอยเต๋าในเว็บ จากนั้นเดินตามแต้มบนกระดานจริง
+              กดสุ่มเลขเพื่อได้แต้มเดิน จากนั้นเดินตามแต้มบนกระดานจริง
             </p>
 
             <div class="text-center my-4">
               <div id="dice" class="dice-box text-success">-</div>
-              <div id="diceText" class="fs-5 fw-semibold">ยังไม่ได้ทอยเต๋า</div>
+              <div id="diceText" class="fs-5 fw-semibold">ยังไม่ได้สุ่มเลข</div>
             </div>
 
             <div class="d-grid gap-2">
-              <button class="btn btn-success btn-lg fw-bold" onclick="rollDice()">ทอยเต๋า</button>
+              <button class="btn btn-success btn-lg fw-bold" onclick="rollDice()">สุ่มเลข</button>
               <button class="btn btn-outline-secondary" onclick="resetGame()">เริ่มรอบใหม่</button>
             </div>
           </div>
@@ -91,7 +127,7 @@
             <h3 class="fw-bold">2) คำถามสุ่ม</h3>
             <div id="questionArea" class="mt-3">
               <div class="alert alert-secondary mb-0">
-                กดทอยเต๋าเพื่อสุ่มคำถาม
+                กดสุ่มเลขเพื่อสุ่มคำถาม
               </div>
             </div>
           </div>
@@ -105,13 +141,19 @@
             <h3 class="fw-bold">ผลลัพธ์การเดิน</h3>
 
             <div class="row text-center g-3 my-2">
-              <div class="col-6">
+              <div class="col-4">
+                <div class="p-3 bg-light rounded-4">
+                  <div class="small-note">ช่องปัจจุบัน</div>
+                  <div id="currentCell" class="fs-1 fw-bold text-primary">1</div>
+                </div>
+              </div>
+              <div class="col-4">
                 <div class="p-3 bg-light rounded-4">
                   <div class="small-note">คะแนน</div>
                   <div id="score" class="fs-1 fw-bold text-success">0</div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 <div class="p-3 bg-light rounded-4">
                   <div class="small-note">จำนวนคำถาม</div>
                   <div id="questionCount" class="fs-1 fw-bold text-success">0</div>
@@ -129,19 +171,13 @@
           <div class="card-body p-4">
             <h3 class="fw-bold">กติกา</h3>
             <ol class="mb-0">
-              <li>ใช้กระดานจริงจำนวน 22 ช่อง</li>
-              <li>เว็บใช้สำหรับทอยเต๋าและสุ่มคำถาม</li>
-              <li>ตอบถูก: ได้ 10 คะแนน และเดินหน้า 2 ช่อง</li>
-              <li>ตอบผิด: ถอยหลัง 1 ช่อง</li>
-              <li>ถ้าหยุดที่ช่องทางลัด ให้ข้ามตามตารางทางลัด</li>
+              <li>กระดานมี 23 ช่อง (เริ่มที่ช่อง 1)</li>
+              <li>สุ่มเลข 1-4 แล้วเดินตามแต้มบนกระดานจริง</li>
+              <li>ตอบคำถามที่สุ่มได้ ตัวเลือกจะถูกสลับทุกครั้ง</li>
+              <li>ตอบถูก: ได้ +3 คะแนน</li>
+              <li>ตอบผิด: ไม่ได้คะแนน</li>
+              <li>ถึงช่อง 23 = ชนะ!</li>
             </ol>
-          </div>
-        </div>
-
-        <div class="card shadow-sm border-0 rounded-4">
-          <div class="card-body p-4">
-            <h3 class="fw-bold">ทางลัด 8 จุด</h3>
-            <div id="shortcutList" class="row g-2 mt-2"></div>
           </div>
         </div>
       </aside>
@@ -149,238 +185,176 @@
   </main>
 
   <script>
-    const shortcuts = {
-      3: 6,
-      5: 9,
-      7: 11,
-      8: 13,
-      10: 15,
-      12: 17,
-      14: 19,
-      16: 21
-    };
-
-    const questions = [
-      {
-        topic: "ชื่อเรียก",
-        question: "คำว่า “มานิ” หมายถึงกลุ่มใด",
-        choices: [
-          "กลุ่มชาติพันธุ์ดั้งเดิมในภาคใต้ของไทย",
-          "ชื่อจังหวัดในภาคใต้",
-          "ชื่ออาหารพื้นเมือง",
-          "ชื่อเครื่องดนตรี"
-        ],
-        answer: 0
-      },
-      {
-        topic: "วิถีชีวิต",
-        question: "วิถีชีวิตดั้งเดิมของชาวมานิสัมพันธ์กับสิ่งใดมากที่สุด",
-        choices: ["ทะเล", "ป่า", "เมือง", "อุตสาหกรรม"],
-        answer: 1
-      },
-      {
-        topic: "ที่อยู่อาศัย",
-        question: "ที่พักชั่วคราวของชาวมานิมักเรียกว่าอะไร",
-        choices: ["ทับ", "เรือนไทย", "วัด", "ศาลา"],
-        answer: 0
-      },
-      {
-        topic: "อาหาร",
-        question: "แหล่งอาหารดั้งเดิมของชาวมานิมักมาจากที่ใด",
-        choices: [
-          "การเก็บของป่าและล่าสัตว์",
-          "ร้านสะดวกซื้อ",
-          "ฟาร์มอุตสาหกรรม",
-          "ตลาดต่างประเทศ"
-        ],
-        answer: 0
-      },
-      {
-        topic: "ภาษา",
-        question: "ภาษาของชาวมานิมักถูกจัดอยู่ในกลุ่มภาษาใด",
-        choices: ["อัสเลียน", "โรมานซ์", "สลาฟ", "ละติน"],
-        answer: 0
-      },
-      {
-        topic: "ความรู้ท้องถิ่น",
-        question: "องค์ความรู้เด่นของชาวมานิเกี่ยวข้องกับเรื่องใด",
-        choices: [
-          "ระบบนิเวศป่าและสมุนไพร",
-          "การเดินเรือข้ามมหาสมุทร",
-          "การผลิตรถยนต์",
-          "การสร้างตึกสูง"
-        ],
-        answer: 0
-      },
-      {
-        topic: "วัฒนธรรม",
-        question: "เหตุใดจึงควรใช้คำว่า “มานิ” แทนคำบางคำที่มีนัยลบ",
-        choices: [
-          "เพื่อเคารพอัตลักษณ์และศักดิ์ศรีของชุมชน",
-          "เพื่อทำให้ชื่อสั้นลงเท่านั้น",
-          "เพื่อให้ดูเป็นภาษาต่างประเทศ",
-          "เพราะเป็นชื่อเกม"
-        ],
-        answer: 0
-      },
-      {
-        topic: "สิ่งแวดล้อม",
-        question: "ปัจจัยใดส่งผลกระทบต่อวิถีชีวิตมานิในปัจจุบัน",
-        choices: [
-          "พื้นที่ป่าลดลง",
-          "หิมะตกตลอดปี",
-          "ภูเขาไฟระเบิดทุกวัน",
-          "การขาดทะเลทราย"
-        ],
-        answer: 0
-      },
-      {
-        topic: "การเรียนรู้",
-        question: "หากต้องศึกษาชุมชนมานิอย่างเหมาะสม ควรให้ความสำคัญกับสิ่งใด",
-        choices: [
-          "การเคารพชุมชนและบริบททางวัฒนธรรม",
-          "การตัดสินจากมุมมองภายนอกเท่านั้น",
-          "การเปลี่ยนวิถีชีวิตทันที",
-          "การใช้ข้อมูลโดยไม่ขออนุญาต"
-        ],
-        answer: 0
-      },
-      {
-        topic: "ฐานความรู้",
-        question: "เกมนี้ใช้ฐานความรู้เพื่อประโยชน์ใด",
-        choices: [
-          "ช่วยให้ผู้เล่นตอบโดยมีเหตุผลและหลักฐาน",
-          "ทำให้เกมไม่มีคำถาม",
-          "เพิ่มความเร็วอินเทอร์เน็ต",
-          "ลดจำนวนช่องในกระดาน"
-        ],
-        answer: 0
-      },
-      {
-        topic: "การอนุรักษ์",
-        question: "การเรียนรู้เรื่องมานิควรหลีกเลี่ยงสิ่งใด",
-        choices: [
-          "การเหมารวมและลดทอนศักดิ์ศรีของชุมชน",
-          "การเคารพข้อมูลชุมชน",
-          "การเรียนรู้จากหลักฐาน",
-          "การใช้ภาษาที่เหมาะสม"
-        ],
-        answer: 0
-      },
-      {
-        topic: "พื้นที่อาศัย",
-        question: "ชุมชนมานิในไทยพบได้มากในภูมิภาคใด",
-        choices: [
-          "ภาคใต้",
-          "ภาคเหนือ",
-          "ภาคตะวันออกเฉียงเหนือ",
-          "ภาคกลางตอนบน"
-        ],
-        answer: 0
-      }
-    ];
-
+    const TOTAL_CELLS = 23;
+    let questions = [];
     let currentQuestion = null;
+    let shuffledChoices = [];
+    let correctShuffledIndex = -1;
     let score = 0;
     let questionCount = 0;
+    let position = 1;
 
-    function rollDice() {
-      const dice = Math.floor(Math.random() * 6) + 1;
-      document.getElementById("dice").textContent = dice;
-      document.getElementById("diceText").textContent = "ทอยได้ " + dice + " แต้ม: ให้ผู้เล่นเดินบนกระดานจริง";
-
-      currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-      renderQuestion(currentQuestion);
-
-      setResult("ให้ผู้เล่นเดินตามแต้มเต๋าบนกระดานจริง แล้วตอบคำถามที่สุ่มได้", "success");
+    // Load questions from JSON
+    async function loadQuestions() {
+      try {
+        const res = await fetch('questions.json');
+        questions = await res.json();
+      } catch (e) {
+        console.error('โหลดคำถามไม่สำเร็จ:', e);
+        document.getElementById('questionArea').innerHTML = `
+          <div class="alert alert-danger mb-0">โหลดคำถามไม่สำเร็จ กรุณารีเฟรชหน้าเว็บ</div>
+        `;
+      }
     }
 
-    function renderQuestion(q) {
-      const area = document.getElementById("questionArea");
+    function renderBoard() {
+      const track = document.getElementById('boardTrack');
+      let html = '';
+      for (let i = 1; i <= TOTAL_CELLS; i++) {
+        const isActive = i === position ? 'active' : '';
+        const isFinish = i === TOTAL_CELLS ? 'finish' : '';
+        html += `<div class="board-cell ${isActive} ${isFinish}" id="cell-${i}">${i}</div>`;
+      }
+      track.innerHTML = html;
+    }
+
+    function updateBoard() {
+      for (let i = 1; i <= TOTAL_CELLS; i++) {
+        const cell = document.getElementById('cell-' + i);
+        cell.classList.remove('active');
+        if (i === position) cell.classList.add('active');
+      }
+      document.getElementById('currentCell').textContent = position;
+    }
+
+    function rollDice() {
+      if (questions.length === 0) {
+        setResult('กำลังโหลดคำถาม กรุณารอสักครู่...', 'warning');
+        return;
+      }
+
+      const dice = Math.floor(Math.random() * 4) + 1;
+      document.getElementById('dice').textContent = dice;
+
+      // Move position
+      position = Math.min(position + dice, TOTAL_CELLS);
+      updateBoard();
+
+      document.getElementById('diceText').textContent = 'สุ่มได้ ' + dice + ' แต้ม → ย้ายไปช่อง ' + position;
+
+      // Check if reached finish
+      if (position >= TOTAL_CELLS) {
+        setResult('🎉 ถึงช่อง 23 แล้ว! ชนะ! คะแนนรวม: ' + score, 'success');
+        document.getElementById('questionArea').innerHTML = `
+          <div class="alert alert-success mb-0 fw-bold fs-5">🎉 จบเกม! คะแนนรวม: ${score}</div>
+        `;
+        return;
+      }
+
+      // Pick random question and shuffle choices
+      pickRandomQuestion();
+
+      setResult('เดิน ' + dice + ' ช่อง → อยู่ช่อง ' + position + ' — ตอบคำถามเลย!', 'success');
+    }
+
+    function pickRandomQuestion() {
+      const q = questions[Math.floor(Math.random() * questions.length)];
+      currentQuestion = q;
+
+      // Shuffle choices
+      const correctAnswer = q.choices[q.answer];
+      shuffledChoices = [...q.choices];
+      // Fisher-Yates shuffle
+      for (let i = shuffledChoices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+      }
+      correctShuffledIndex = shuffledChoices.indexOf(correctAnswer);
+
+      renderQuestion(q, shuffledChoices);
+    }
+
+    function renderQuestion(q, choices) {
+      const area = document.getElementById('questionArea');
 
       area.innerHTML = `
         <span class="badge text-bg-warning mb-2">${q.topic}</span>
         <h4 class="fw-bold">${q.question}</h4>
         <div class="d-grid gap-2 mt-3">
-          ${q.choices.map((choice, index) => `
+          ${choices.map((choice, index) => `
             <button class="btn btn-outline-success choice-btn" onclick="checkAnswer(${index})">
               ${String.fromCharCode(65 + index)}. ${choice}
             </button>
-          `).join("")}
+          `).join('')}
         </div>
       `;
     }
 
     function checkAnswer(selected) {
       if (!currentQuestion) {
-        setResult("ยังไม่มีคำถาม กรุณาทอยเต๋าก่อน", "warning");
+        setResult('ยังไม่มีคำถาม กรุณาสุ่มเลขก่อน', 'warning');
         return;
       }
 
       questionCount++;
 
-      if (selected === currentQuestion.answer) {
-        score += 10;
+      if (selected === correctShuffledIndex) {
+        score += 3;
         setResult(
-          "ตอบถูก: ได้ 10 คะแนน และให้ผู้เล่นเดินหน้า 2 ช่องบนกระดานจริง หากไปหยุดที่ช่องทางลัด ให้ใช้ทางลัดตามตาราง",
-          "success"
+          'ตอบถูก! +3 คะแนน (รวม ' + score + ' คะแนน)',
+          'success'
         );
       } else {
-        const correct = currentQuestion.choices[currentQuestion.answer];
+        const correct = shuffledChoices[correctShuffledIndex];
         setResult(
-          "ตอบผิด: ให้ผู้เล่นถอยหลัง 1 ช่องบนกระดานจริง<br><br><strong>คำตอบที่ถูก:</strong> " + correct,
-          "danger"
+          'ตอบผิด ไม่ได้คะแนน<br><br><strong>คำตอบที่ถูก:</strong> ' + correct,
+          'danger'
         );
       }
 
       updateStats();
       currentQuestion = null;
 
-      document.getElementById("questionArea").innerHTML = `
+      document.getElementById('questionArea').innerHTML = `
         <div class="alert alert-secondary mb-0">
-          กดทอยเต๋าเพื่อสุ่มคำถามข้อต่อไป
+          กดสุ่มเลขเพื่อสุ่มคำถามข้อต่อไป
         </div>
       `;
     }
 
     function setResult(text, type) {
-      const box = document.getElementById("resultBox");
-      box.className = "rounded-4 p-3 mt-3 border-start border-5 border-" + type;
-      box.style.background = "#ffffff";
-      box.innerHTML = "<strong>สถานะ:</strong> " + text;
+      const box = document.getElementById('resultBox');
+      box.className = 'rounded-4 p-3 mt-3 border-start border-5 border-' + type;
+      box.style.background = '#ffffff';
+      box.innerHTML = '<strong>สถานะ:</strong> ' + text;
     }
 
     function updateStats() {
-      document.getElementById("score").textContent = score;
-      document.getElementById("questionCount").textContent = questionCount;
+      document.getElementById('score').textContent = score;
+      document.getElementById('questionCount').textContent = questionCount;
     }
 
     function resetGame() {
       score = 0;
       questionCount = 0;
       currentQuestion = null;
+      position = 1;
 
-      document.getElementById("dice").textContent = "-";
-      document.getElementById("diceText").textContent = "ยังไม่ได้ทอยเต๋า";
-      document.getElementById("questionArea").innerHTML = `
+      document.getElementById('dice').textContent = '-';
+      document.getElementById('diceText').textContent = 'ยังไม่ได้สุ่มเลข';
+      document.getElementById('questionArea').innerHTML = `
         <div class="alert alert-secondary mb-0">
-          กดทอยเต๋าเพื่อสุ่มคำถาม
+          กดสุ่มเลขเพื่อสุ่มคำถาม
         </div>
       `;
-      setResult("เริ่มรอบใหม่แล้ว", "success");
+      setResult('เริ่มรอบใหม่แล้ว', 'success');
       updateStats();
+      updateBoard();
     }
 
-    function renderShortcuts() {
-      const list = document.getElementById("shortcutList");
-      list.innerHTML = Object.entries(shortcuts).map(([from, to]) => `
-        <div class="col-6">
-          <div class="shortcut-item text-center">ช่อง ${from} → ${to}</div>
-        </div>
-      `).join("");
-    }
-
-    renderShortcuts();
+    // Initialize
+    loadQuestions();
+    renderBoard();
     updateStats();
   </script>
 </body>
