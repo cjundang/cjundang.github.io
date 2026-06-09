@@ -174,8 +174,8 @@
               <li>กระดานมี 23 ช่อง (เริ่มที่ช่อง 1)</li>
               <li>สุ่มเลข 1-4 แล้วเดินตามแต้มบนกระดานจริง</li>
               <li>ตอบคำถามที่สุ่มได้ ตัวเลือกจะถูกสลับทุกครั้ง</li>
-              <li>ตอบถูก: ได้ +3 คะแนน</li>
-              <li>ตอบผิด: ไม่ได้คะแนน</li>
+              <li>ตอบถูก: +3 คะแนน และเดินหน้าอีก 2 ช่อง</li>
+              <li>ตอบผิด: ถอยหลัง 1 ช่อง</li>
               <li>ถึงช่อง 23 = ชนะ!</li>
             </ol>
           </div>
@@ -244,9 +244,9 @@
 
       // Check if reached finish
       if (position >= TOTAL_CELLS) {
-        setResult('🎉 ถึงช่อง 23 แล้ว! ชนะ! คะแนนรวม: ' + score, 'success');
+        setResult('🎉 ถึงปลายทางแล้ว! คะแนนรวม: ' + score, 'success');
         document.getElementById('questionArea').innerHTML = `
-          <div class="alert alert-success mb-0 fw-bold fs-5">🎉 จบเกม! คะแนนรวม: ${score}</div>
+          <div class="alert alert-success mb-0 fw-bold fs-5">🎉 ถึงปลายทางแล้ว! คะแนนรวม: ${score}</div>
         `;
         return;
       }
@@ -300,20 +300,35 @@
 
       if (selected === correctShuffledIndex) {
         score += 3;
+        // ตอบถูก เดินหน้า 2 ช่อง
+        position = Math.min(position + 2, TOTAL_CELLS);
+        updateBoard();
         setResult(
-          'ตอบถูก! +3 คะแนน (รวม ' + score + ' คะแนน)',
+          'ตอบถูก! +3 คะแนน เดินหน้า 2 ช่อง → อยู่ช่อง ' + position,
           'success'
         );
       } else {
         const correct = shuffledChoices[correctShuffledIndex];
+        // ตอบผิด ถอยหลัง 1 ช่อง
+        position = Math.max(position - 1, 1);
+        updateBoard();
         setResult(
-          'ตอบผิด ไม่ได้คะแนน<br><br><strong>คำตอบที่ถูก:</strong> ' + correct,
+          'ตอบผิด ถอยหลัง 1 ช่อง → อยู่ช่อง ' + position + '<br><br><strong>คำตอบที่ถูก:</strong> ' + correct,
           'danger'
         );
       }
 
       updateStats();
       currentQuestion = null;
+
+      // Check if reached finish after moving
+      if (position >= TOTAL_CELLS) {
+        document.getElementById('questionArea').innerHTML = `
+          <div class="alert alert-success mb-0 fw-bold fs-5">🎉 ถึงปลายทางแล้ว! คะแนนรวม: ${score}</div>
+        `;
+        setResult('🎉 ถึงปลายทางแล้ว! คะแนนรวม: ' + score, 'success');
+        return;
+      }
 
       document.getElementById('questionArea').innerHTML = `
         <div class="alert alert-secondary mb-0">
