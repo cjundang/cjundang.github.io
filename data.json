@@ -68,9 +68,9 @@
   "teaching": {
     "current_courses": [
       {
-        "course_name": "Workshop: Simple RAG using n8n",
+        "course_name": "Workshop: IOT",
         "category": "Current",
-        "url": "https://github.com/cjundang/Workshop-Simple-RAG-n8n"
+        "url": "https://github.com/cjundang/Workshop-IoT"
       }
     ],
     "previous_courses": [
