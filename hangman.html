@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Hangman</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, "Noto Sans Thai", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; padding: 24px 14px; color: #eaf1ff;
+    background: radial-gradient(ellipse at top, #152d51, #080f20 70%) fixed; }
+  main { max-width: 760px; margin: auto; }
+  h1 { font-size: clamp(1.8rem, 6vw, 3rem); margin: 0 0 4px; }
+  .eyebrow { color: #5eead4; letter-spacing: .18em; font-size: .8rem; font-weight: 700; }
+  p, li { color: #aabbcf; line-height: 1.7; }
+  .card { background: #111e32; border: 1px solid #293c56; border-radius: 20px; padding: 22px; margin-top: 18px; }
+  .hidden { display: none !important; }
+  input[type=text] { width: 100%; padding: 12px 14px; font-size: 1rem; border-radius: 12px;
+    border: 1px solid #3a526f; background: #0c1729; color: inherit; }
+  button { font: inherit; cursor: pointer; border: 1px solid #3a526f; background: #1a2d49; color: inherit;
+    border-radius: 10px; padding: 10px 16px; }
+  button:hover:not(:disabled) { background: #24406a; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary { background: #0f766e; border-color: #14b8a6; font-weight: 700; margin-top: 14px; }
+  .error { color: #fb7185; margin: 10px 0 0; min-height: 1.4em; }
+  .stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat { padding: 8px 12px; background: #152239; border: 1px solid #293c56; border-radius: 10px; font-size: .9rem; }
+  .stat strong { color: #5eead4; }
+  #hint { font-size: 1.15rem; color: #eaf1ff; margin: 16px 0; }
+  #word { display: flex; flex-wrap: wrap; gap: 8px 6px; justify-content: center; margin: 18px 0; }
+  .ch { width: 2.2rem; height: 2.8rem; display: grid; place-items: center; font-size: 1.6rem; font-weight: 700;
+    border-bottom: 3px solid #5eead4; font-family: ui-monospace, monospace; }
+  .ch.sep { border-color: transparent; width: 1.4rem; color: #aabbcf; }
+  .ch.sp { border-color: transparent; width: 1rem; }
+  #keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(42px, 1fr)); gap: 6px; margin-top: 12px; }
+  #keys button { padding: 10px 0; font-weight: 700; }
+  #keys button.ok { background: #14532d; border-color: #22c55e; }
+  #keys button.bad { background: #5b1b2a; border-color: #fb7185; }
+  .big { font-size: 2rem; font-weight: 800; }
+  .win { color: #4ade80; } .lose { color: #fb7185; }
+  .answer { font-size: 1.6rem; font-weight: 800; letter-spacing: .05em; }
+  .row { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+  @media (max-width: 480px) { .ch { width: 1.7rem; height: 2.4rem; font-size: 1.3rem; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">COMPUTER NETWORK</div>
+  <h1>Network Hangman</h1>
+
+  <div id="loadError" class="card hidden" role="alert"></div>
+
+  <!-- หน้าจอเริ่มเกม -->
+  <section id="screenStart" class="card hidden">
+    <label for="name"><strong>ชื่อผู้เล่น</strong></label>
+    <input id="name" type="text" maxlength="30" autocomplete="off" placeholder="กรอกชื่อของคุณ">
+    <div id="nameError" class="error" role="alert"></div>
+    <button id="btnStart" class="primary">เริ่มเกม</button>
+    <h3>กติกา</h3>
+    <ul>
+      <li>ระบบแสดงความหมายเป็นคำใบ้ ให้ทายคำศัพท์ภาษาอังกฤษทีละตัวอักษร (A–Z)</li>
+      <li>พิมพ์ทายได้ไม่จำกัด แต่ทายผิดได้สูงสุดครึ่งหนึ่งของความยาวคำ ปัดเศษลง</li>
+      <li>ทายซ้ำตัวอักษรเดิมไม่นับเป็นการทายผิด</li>
+      <li>เปิดเผยคำครบก่อนทายผิดเกินกำหนด ได้ 1 คะแนน มิฉะนั้นได้ 0 คะแนนและเฉลยในหน้าเดียวกัน</li>
+      <li>ตัวอักขระที่ไม่ใช่ตัวอักษร เช่น เว้นวรรค - / . ตัวเลข จะแสดงให้เห็นเลย และไม่นับในความยาวคำ</li>
+      <li>เล่นได้ทั้งปุ่มบนหน้าจอและแป้นพิมพ์</li>
+    </ul>
+  </section>
+
+  <!-- หน้าจอเล่นเกม -->
+  <section id="screenPlay" class="card hidden">
+    <div class="stats">
+      <div class="stat">ผู้เล่น: <strong id="pName"></strong></div>
+      <div class="stat">คำที่ <strong id="pIndex"></strong></div>
+      <div class="stat">ทายถูก/เล่นจบ: <strong id="pCorrect"></strong></div>
+      <div class="stat">เวลาเฉลี่ย: <strong id="pAvg"></strong></div>
+      <div class="stat">เวลาคำนี้: <strong id="pTime">0.0</strong> วินาที</div>
+      <div class="stat">ผิดได้อีก: <strong id="pLeft"></strong> ครั้ง</div>
+    </div>
+    <div id="hint"></div>
+    <div id="word" aria-live="polite"></div>
+    <div id="guessed" class="stat" style="margin-bottom:8px">ตัวอักษรที่ทายแล้ว: <strong>—</strong></div>
+    <div id="keys"></div>
+  <!-- ผลลัพธ์รายคำ -->
+  <div id="result" class="hidden" style="margin-top:18px;padding-top:6px;border-top:1px solid #293c56">
+    <div id="rTitle" class="big"></div>
+    <p>คำเฉลย</p>
+    <div id="rAnswer" class="answer"></div>
+    <p id="rMeaning"></p>
+    <div class="stats">
+      <div class="stat">คะแนน: <strong id="rScore"></strong></div>
+      <div class="stat">เวลาที่ใช้: <strong id="rTime"></strong> วินาที</div>
+    </div>
+    <button id="btnNext" class="primary">คำถัดไป</button>
+  </div>
+
+  </section>
+
+  <!-- สรุปผล -->
+  <section id="screenSummary" class="card hidden">
+    <div class="big">สรุปผล</div>
+    <p id="sumText" style="white-space: pre-line; color:#eaf1ff; font-size:1.1rem"></p>
+    <button id="btnRestart" class="primary">เริ่มรอบใหม่</button>
+  </section>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const screens = ['screenStart', 'screenPlay', 'screenSummary'];
+  const show = id => screens.forEach(s => $(s).classList.toggle('hidden', s !== id));
+  const fmt = s => s.toFixed(2);
+
+  let vocab = [];
+  let state = null;
+
+  // ---------- โหลดและตรวจสอบข้อมูล ----------
+  function parseData(md) {
+    const seen = new Set(), out = [];
+    for (const line of md.split(/\r?\n/)) {
+      const t = line.trim();
+      if (!t.startsWith('|')) continue;
+      const cells = t.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      if (cells.length < 2) continue;
+      if (cells.every(c => /^:?-{2,}:?$/.test(c))) continue;         // เส้นคั่นตาราง
+      const word = cells[0], meaning = cells[cells.length - 1];       // คอลัมน์แรก = คำ, คอลัมน์สุดท้าย = ความหมาย
+      if (!word || !meaning) continue;
+      if (/^(word|คำศัพท์)$/i.test(word)) continue;                    // หัวตาราง
+      const key = word.toLowerCase();
+      if (seen.has(key)) continue;                                    // คำซ้ำ (ไม่แยกตัวพิมพ์)
+      const letters = word.toUpperCase().replace(/[^A-Z]/g, '');
+      if (letters.length < 2) continue;                               // ต้องมีอย่างน้อย 2 ตัวอักษร
+      seen.add(key);
+      out.push({ word: word.toUpperCase(), display: word, meaning, length: letters.length });
+    }
+    return out;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch('data.md', { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      vocab = parseData(await res.text());
+      if (!vocab.length) throw new Error('ไม่มีคำศัพท์ที่ใช้งานได้');
+      show('screenStart');
+    } catch (e) {
+      const box = $('loadError');
+      box.textContent = 'ไม่สามารถโหลดข้อมูลคำศัพท์จาก data.md ได้ (' + e.message + '). ' +
+        'หากเปิดไฟล์โดยตรง ให้รันผ่านเว็บเซิร์ฟเวอร์ เช่น python3 -m http.server';
+      box.classList.remove('hidden');
+      screens.forEach(s => $(s).classList.add('hidden'));
+    }
+  }
+
+  // ---------- ตรรกะเกม ----------
+  function shuffle(a) {
+    a = a.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function startRound(name) {
+    state = { name, queue: shuffle(vocab), idx: -1, score: 0, done: 0, totalTime: 0, cur: null, timer: null };
+    nextWord();
+  }
+
+  function nextWord() {
+    state.idx++;
+    if (state.idx >= state.queue.length) return showSummary();
+    const e = state.queue[state.idx];
+    state.cur = {
+      entry: e, max: Math.floor(e.length / 2), used: 0, /* used = จำนวนครั้งที่ทายผิด */
+      guessed: new Set(), letters: new Set(e.word.replace(/[^A-Z]/g, '')),
+      start: performance.now(), over: false
+    };
+    $('result').classList.add('hidden');
+    renderPlay();
+    show('screenPlay');
+    clearInterval(state.timer);
+    state.cur.start = performance.now();
+    state.timer = setInterval(tick, 100);
+  }
+
+  const elapsed = () => (performance.now() - state.cur.start) / 1000;
+  function tick() { if (state && state.cur && !state.cur.over) $('pTime').textContent = elapsed().toFixed(1); }
+
+  function solved(c) { return [...c.letters].every(l => c.guessed.has(l)); }
+
+  function guess(letter) {
+    if (!state || !state.cur || state.cur.over) return;
+    if (!/^[A-Z]$/.test(letter)) return;
+    const c = state.cur;
+    if (c.guessed.has(letter)) return;                 // ซ้ำ: ไม่นับ
+    c.guessed.add(letter);
+    if (!c.letters.has(letter)) c.used++;              // นับเฉพาะทายผิด
+    if (solved(c)) return finish(true);
+    if (c.used >= c.max) return finish(false);
+    renderPlay();
+  }
+
+  function finish(win) {
+    const c = state.cur;
+    c.over = true;
+    clearInterval(state.timer);
+    const t = elapsed();
+    state.done++;
+    state.totalTime += t;
+    if (win) state.score++;
+    renderPlay();
+    $('rTitle').textContent = win ? 'ทายถูก!' : 'ทายไม่สำเร็จ';
+    $('rTitle').className = 'big ' + (win ? 'win' : 'lose');
+    $('rAnswer').textContent = c.entry.display;
+    $('rMeaning').textContent = c.entry.meaning;
+    $('rScore').textContent = win ? '1' : '0';
+    $('rTime').textContent = fmt(t);
+    $('btnNext').textContent = state.idx + 1 >= state.queue.length ? 'ดูสรุปผล' : 'คำถัดไป';
+    $('result').classList.remove('hidden');
+    $('btnNext').focus();
+  }
+
+  function showSummary() {
+    const avg = state.done ? fmt(state.totalTime / state.done) + ' วินาที' : '—';
+    $('sumText').textContent =
+      `ผู้เล่น: ${state.name}\n` +
+      `ทายถูก / เล่นจบทั้งหมด: ${state.score} / ${state.done} คำ\n` +
+      `คะแนนรวม: ${state.score} คะแนน\n` +
+      `เวลาเฉลี่ยต่อคำ: ${avg}`;
+    show('screenSummary');
+    $('btnRestart').focus();
+  }
+
+  // ---------- แสดงผล ----------
+  function renderPlay() {
+    const c = state.cur, e = c.entry;
+    $('pName').textContent = state.name;
+    $('pIndex').textContent = `${state.idx + 1}/${state.queue.length}`;
+    $('pCorrect').textContent = `${state.score} / ${state.done}`;
+    $('pAvg').textContent = state.done ? fmt(state.totalTime / state.done) + ' วินาที' : '—';
+    $('pLeft').textContent = c.max - c.used;
+    $('hint').textContent = 'คำใบ้: ' + e.meaning;
+
+    const w = $('word');
+    w.innerHTML = '';
+    for (const ch of e.word) {
+      const d = document.createElement('div');
+      if (/[A-Z]/.test(ch)) { d.className = 'ch'; d.textContent = (c.guessed.has(ch) || c.over) ? ch : ''; }
+      else if (ch === ' ') d.className = 'ch sp';
+      else { d.className = 'ch sep'; d.textContent = ch; }
+      w.appendChild(d);
+    }
+    const g = [...c.guessed];
+    $('guessed').lastElementChild.textContent = g.length ? g.join(' ') : '—';
+
+    document.querySelectorAll('#keys button').forEach(b => {
+      const l = b.dataset.k, used = c.guessed.has(l);
+      b.disabled = used || c.over;
+      b.className = used ? (c.letters.has(l) ? 'ok' : 'bad') : '';
+    });
+  }
+
+  function buildKeys() {
+    const k = $('keys');
+    for (let i = 0; i < 26; i++) {
+      const l = String.fromCharCode(65 + i);
+      const b = document.createElement('button');
+      b.textContent = l; b.dataset.k = l; b.type = 'button';
+      b.addEventListener('click', () => guess(l));
+      k.appendChild(b);
+    }
+  }
+
+  // ---------- เหตุการณ์ ----------
+  function begin() {
+    const name = $('name').value.trim();
+    if (!name) { $('nameError').textContent = 'กรุณากรอกชื่อผู้เล่น'; $('name').focus(); return; }
+    $('nameError').textContent = '';
+    startRound(name);
+  }
+
+  $('btnStart').addEventListener('click', begin);
+  $('name').addEventListener('keydown', e => { if (e.key === 'Enter') begin(); });
+  $('btnNext').addEventListener('click', nextWord);
+  $('btnRestart').addEventListener('click', () => { show('screenStart'); $('name').focus(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if ($('screenPlay').classList.contains('hidden')) return;
+    if (document.activeElement && document.activeElement.tagName === 'BUTTON' && e.key === 'Enter') return;
+    if (/^[a-zA-Z]$/.test(e.key)) guess(e.key.toUpperCase());
+  });
+
+  buildKeys();
+  load();
+})();
+</script>
+</body>
+</html>
