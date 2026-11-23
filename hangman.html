@@ -139,7 +139,7 @@
 
   async function load() {
     try {
-      const res = await fetch('data.md', { cache: 'no-store' });
+      const res = await fetch('vocap.md', { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       vocab = parseData(await res.text());
       if (!vocab.length) throw new Error('ไม่มีคำศัพท์ที่ใช้งานได้');
